@@ -5,24 +5,33 @@ from nltk import FreqDist
 # ustawiamy czcionkę wspierającą unicode - w domyślnej są tylko znaki ASCII
 rc('font', family='DejaVu Sans')
 
-words = ['Wokulski', 'Rzecki', 'subiekt', 'handel', 'sklep']
+words = ['do', 'ma', 'jest', 'kot', 'zrobił']
 title1 = 'lalka-tom-pierwszy.txt'
 title2 = 'lalka-tom-drugi.txt'
 
-def line_plot(data1, data2, names):
+nazwy_plikow = [ "lord-jim.txt", "przedwiosnie.txt", "sklepy-cynamonowe.txt", "szewcy.txt", "ziemia-obiecana-tom-pierwszy.txt" ]
+tytuly = [ "Lord Jim", "Przedwiośnie", "Sklepy cynamonowe", "Szewcy", "Ziemia obiecana, Tom I"]
+
+def heatmap_plot(ress, titles, words):
     plt.title("Liczba wystąpień słów")
-    plt.xlabel("Próbki")
-    plt.ylabel("Liczba wystąpień")
+#    plt.xlabel("Próbki")
+#    plt.ylabel("Liczba wystąpień")
 
-    plt.plot(data1, color='r', label="Dane 1")
-    plt.plot(data2, color='b', label="Dane 2")
-    plt.legend()
+#    plt.plot(data1, color='r', label="Dane 1")
+#    plt.scatter(range(len(names)), data1)
+#    plt.plot(data2, color='b', label="Dane 2")
+#    plt.scatter(range(len(names)), data2)
 
-    plt.grid()
+    plt.pcolor(ress)
 
-    plt.xticks(range(len(names)), names, rotation=90)
+#    plt.legend()
 
-    plt.tight_layout()
+#    plt.grid()
+
+    plt.yticks(range(len(titles)), titles)
+    plt.xticks(range(len(words)), words, rotation = 90)
+
+#    plt.tight_layout()
     plt.savefig('plot.png')
     plt.show()
 
@@ -39,16 +48,18 @@ def return_values(freq, words):
     return result
 
 
-def make_plot(file1, file2, words):
-    freq1 = count_freq(file1)
-    freq2 = count_freq(file2)
+def make_plot(files, titles, words):
+    ress = []
 
-    res1 = return_values(freq1, words)
-    res2 = return_values(freq2, words)
+    for file1 in files:
+        freq1 = count_freq(file1)
+        ress.append(return_values(freq1, words))
 
-    line_plot(res1, res2, words)
+    heatmap_plot(ress, titles, words)
 
-make_plot(title1, title2, words)
+if __name__ == '__main__':
+    make_plot(nazwy_plikow, tytuly, words)
+
 
 # teraz dopisz kod tworzący wykres punktowy zawierający liczbę wystąpień słów z listy
 # z punktami różnych kolorów dla pierwszego i drugiego tomu "Lalki"
